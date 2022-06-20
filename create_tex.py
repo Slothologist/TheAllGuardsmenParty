@@ -37,9 +37,10 @@ def prepare_text(text):
 def extract_picture(dip, large=False):
     """ <img src="images/ship/2.png"/> """
     point = 'href' if large else 'src'
+    if dip[point].endswith('html'): # workaround for misplaced footers
+        return ''
     pic_link = "/".join(link.split('/')[:-1]) + '/' + dip[point]
     pic_link = pic_link.replace(' ', '%20')
-    print(pic_link)
     local_pic_file = 'pics/' + chap_number + '/' + dip[point].split('/')[-1]
     if not os.path.isfile(local_pic_file):
         urllib.request.urlretrieve(pic_link, local_pic_file)
